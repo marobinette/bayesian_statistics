@@ -1,13 +1,13 @@
 data {
   int<lower=1> N;          // dataset size; set to 5068 to match the observed data
-  real mu_lo;              // mu ~ Uniform(mu_lo, mu_hi)   <- center prior
-  real mu_hi;
+  real mu_mean;             
+  real<lower=0> mu_sd;
   real<lower=0> sigma_hi;  // sigma ~ Uniform(0, sigma_hi) <- spread prior
 }
 
 generated quantities {
   // one draw of the two dials, per simulated dataset
-  real mu = uniform_rng(mu_lo, mu_hi);
+  real mu = normal_rng(mu_mean, mu_sd); // normal_rng takes the mean and sd, not the variance
   real<lower=0> sigma = uniform_rng(0, sigma_hi);
 
   // one full simulated dataset of N ratings from those dials
