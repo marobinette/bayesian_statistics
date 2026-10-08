@@ -3,6 +3,9 @@ data {
     int<lower=1> q;
     matrix[N, q] X;
     vector[N] Y;
+    real alpha_mean;
+    real<lower=0> alpha_sd;
+    real beta_sd;
     int<lower=0, upper=1> use_likelihood;
 }
 parameters {
@@ -20,8 +23,8 @@ transformed parameters {
     }
 }
 model {
-    alpha ~ normal(12, 0.5);  
-    beta ~ normal(0, 0.5);       
+    alpha ~ normal(alpha_mean, alpha_sd);  
+    beta ~ normal(0, beta_sd);       
     sigma ~ exponential(3);
     if (use_likelihood) {
         Y ~ normal(mu, sigma);
